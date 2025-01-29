@@ -1,0 +1,33 @@
+<!-- Szablon strony głównej aplikacji, który wyświetla listę wsyzstkich postów z bazy danych
+oraz formularz do dodania nowego wpisu (widoczny wyłącznie dla zalogowanych użytkowników. -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="text-center mb-4">Posty</h1>
+
+{% for post in posts %}
+    <div class="card shadow-sm mb-3">
+        <div class="card-body">
+            <p class="card-text">{{ post.content }}</p>
+            <p class="text-muted small">Dodane przez: {{ post.user.username }}</p>
+            {% if current_user.is_authenticated and post.user_id == current_user.id %}
+                <form method="POST" action="/delete/{{ post.id }}" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-danger">Usuń</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}
+
+{% if current_user.is_authenticated %}
+    <form method="POST" action="/add" class="mt-4">
+        <div class="mb-3">
+            <label for="content" class="form-label">Nowy post:</label>
+            <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Dodaj post</button>
+    </form>
+{% else %}
+    <p class="text-center"><a href="/login">Zaloguj się</a>, aby dodać nowy post.</p>
+{% endif %}
+{% endblock %}
