@@ -1,1 +1,2 @@
-# Projekt-python
+# Projekt-python 
+#Polecenie do pierwszego uruchomienia 
